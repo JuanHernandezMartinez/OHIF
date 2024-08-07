@@ -121,7 +121,7 @@ const LegacyViewportActionBar = ({
           <LegacyCinePlayer {...cineProps} />
         </div>
       )}
-      <div
+      {/* <div
         className="mt-2 ml-4 mr-2 flex h-8"
         onClick={onPatientInfoClick}
       >
@@ -136,7 +136,7 @@ const LegacyViewportActionBar = ({
           spacing={spacing}
           scanner={scanner}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

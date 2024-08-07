@@ -67,6 +67,7 @@ const ViewportActionBar = ({
   const clickOutsideListener = useOnClickOutside(showPatientInfoElemRef, closePatientInfo);
 
   useEffect(() => {
+    localStorage.setItem('nombre', patientName);
     if (showPatientInfo) {
       clickOutsideListener.add();
     } else {
@@ -74,7 +75,7 @@ const ViewportActionBar = ({
     }
 
     return () => clickOutsideListener.remove();
-  }, [clickOutsideListener, showPatientInfo]);
+  }, [clickOutsideListener, showPatientInfo, patientName]);
 
   /**
    * Handles what gets hidden and what gets shown during a resize of the viewport.
@@ -147,7 +148,7 @@ const ViewportActionBar = ({
           />
         </>
       )}
-      <div
+      {/* <div
         className={patientInfoClasses()}
         onClick={onPatientInfoClick}
       >
@@ -163,7 +164,7 @@ const ViewportActionBar = ({
           spacing={spacing}
           scanner={scanner}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

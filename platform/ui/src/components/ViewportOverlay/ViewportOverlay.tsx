@@ -44,6 +44,7 @@ const ViewportOverlay = ({
         data-cy={'viewport-overlay-top-left'}
         className={classnames(overlay, classes.topLeft)}
       >
+        {localStorage.getItem('paciente')}
         {topLeft}
       </div>
       <div

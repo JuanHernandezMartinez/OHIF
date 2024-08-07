@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+const mql = window.matchMedia('(min-width:1024px)');
+let MobileVewi = mql.matches;
 const baseClasses =
   'text-center items-center justify-center transition duration-300 ease-in-out outline-none font-bold focus:outline-none';
 
@@ -60,9 +62,9 @@ const sizeClasses = {
 };
 
 const iconSizeClasses = {
-  small: 'w-4 h-4',
-  medium: 'w-5 h-5',
-  large: 'w-6 h-6',
+  small: 'w-3 h-3',
+  medium: 'w-3 h-3',
+  large: 'w-3 h-3',
   toolbar: 'w-[28px] h-[28px]',
   toolbox: 'w-[24px] h-[24px]',
 };

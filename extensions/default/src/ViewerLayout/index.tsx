@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-
-import { ErrorBoundary, LoadingIndicatorProgress, InvestigationalUseDialog } from '@ohif/ui';
-import { HangingProtocolService, CommandsManager } from '@ohif/core';
+import { ErrorBoundary, LoadingIndicatorProgress } from '@ohif/ui';
+import { HangingProtocolService, CommandsManager, utils } from '@ohif/core';
 import { useAppConfig } from '@state';
 import ViewerHeader from './ViewerHeader';
 import SidePanelWithServices from '../Components/SidePanelWithServices';
+import Mensaje from './Mensaje';
 
 function ViewerLayout({
   // From Extension Module Params
@@ -108,14 +108,83 @@ function ViewerLayout({
 
   const viewportComponents = viewports.map(getViewportComponentData);
 
+  const mql = window.matchMedia('(min-width:1024px)');
+  let MobileView = mql.matches;
+
+  const { formatDate, formatPN } = utils;
+
+  function usePatientInfo(servicesManager: AppTypes.ServicesManager) {
+    const { displaySetService } = servicesManager.services;
+
+    const [patientInfo, setPatientInfo] = useState({
+      PatientName: '',
+      PatientID: '',
+      PatientSex: '',
+      PatientDOB: '',
+    });
+    const [isMixedPatients, setIsMixedPatients] = useState(false);
+    const displaySets = displaySetService.getActiveDisplaySets();
+
+    const checkMixedPatients = PatientID => {
+      const displaySets = displaySetService.getActiveDisplaySets();
+      let isMixedPatients = false;
+      displaySets.forEach(displaySet => {
+        const instance = displaySet?.instances?.[0] || displaySet?.instance;
+        if (!instance) {
+          return;
+        }
+        if (instance.PatientID !== PatientID) {
+          isMixedPatients = true;
+        }
+      });
+      setIsMixedPatients(isMixedPatients);
+    };
+
+    const updatePatientInfo = () => {
+      const displaySet = displaySets[0];
+      const instance = displaySet?.instances?.[0] || displaySet?.instance;
+      if (!instance) {
+        return;
+      }
+      setPatientInfo({
+        PatientID: instance.PatientID || null,
+        PatientName: instance.PatientName ? formatPN(instance.PatientName.Alphabetic) : null,
+        PatientSex: instance.PatientSex || null,
+        PatientDOB: formatDate(instance.PatientBirthDate) || null,
+      });
+      checkMixedPatients(instance.PatientID || null);
+    };
+
+    useEffect(() => {
+      const subscription = displaySetService.subscribe(
+        displaySetService.EVENTS.DISPLAY_SETS_ADDED,
+        () => updatePatientInfo()
+      );
+      return () => subscription.unsubscribe();
+    }, []);
+
+    useEffect(() => {
+      updatePatientInfo();
+    }, [displaySets]);
+
+    return { patientInfo, isMixedPatients };
+  }
+
+  const { patientInfo, isMixedPatients } = usePatientInfo(servicesManager);
+  localStorage.setItem('paciente', patientInfo.PatientName);
+  console.log(patientInfo);
+
   return (
     <div>
-      <ViewerHeader
-        hotkeysManager={hotkeysManager}
-        extensionManager={extensionManager}
-        servicesManager={servicesManager}
-        appConfig={appConfig}
-      />
+      <Mensaje />
+      {MobileView ? (
+        <ViewerHeader
+          hotkeysManager={hotkeysManager}
+          extensionManager={extensionManager}
+          servicesManager={servicesManager}
+          appConfig={appConfig}
+        />
+      ) : null}
       <div
         className="relative flex w-full flex-row flex-nowrap items-stretch overflow-hidden bg-black"
         style={{ height: 'calc(100vh - 52px' }}
@@ -144,7 +213,7 @@ function ViewerLayout({
               </ErrorBoundary>
             </div>
           </div>
-          {hasRightPanels ? (
+          {/* {hasRightPanels ? (
             <ErrorBoundary context="Right Panel">
               <SidePanelWithServices
                 side="right"
@@ -152,11 +221,11 @@ function ViewerLayout({
                 servicesManager={servicesManager}
               />
             </ErrorBoundary>
-          ) : null}
+          ) : null} */}
         </React.Fragment>
       </div>
 
-      <InvestigationalUseDialog dialogConfiguration={appConfig?.investigationalUseDialog} />
+      {/* <InvestigationalUseDialog dialogConfiguration={appConfig?.investigationalUseDialog} /> */}
     </div>
   );
 }

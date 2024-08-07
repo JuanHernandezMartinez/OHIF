@@ -64,6 +64,10 @@
     "link-list": "npm ls --depth=0 --link=true"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.16.6",
+    "@mui/material": "^5.16.6",
     "execa": "^8.0.1"
   },
   "optionalDependencies": {
