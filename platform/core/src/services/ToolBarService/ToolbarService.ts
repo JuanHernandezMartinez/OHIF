@@ -387,7 +387,14 @@ export default class ToolbarService extends PubSubService {
    * @returns An array of buttons in the specified section, mapped to their display representation.
    */
   getButtonSection(sectionId: string, props?: Record<string, unknown>) {
-    const buttonSectionIds = this.state.buttonSections[sectionId];
+    const mql = window.matchMedia('(min-width:1024px)');
+    let MobileView = mql.matches;
+    const buttonsMobil = ['Zoom', 'Pan', 'WindowLevel', 'Capture', 'MoreTools'];
+    let buttonSectionIds = this.state.buttonSections[sectionId];
+
+    if (!MobileView) {
+      buttonSectionIds = buttonsMobil;
+    }
 
     return (
       buttonSectionIds?.map(btnId => {

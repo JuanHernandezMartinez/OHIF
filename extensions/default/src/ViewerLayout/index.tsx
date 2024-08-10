@@ -172,8 +172,7 @@ function ViewerLayout({
 
   const { patientInfo, isMixedPatients } = usePatientInfo(servicesManager);
   localStorage.setItem('paciente', patientInfo.PatientName);
-  console.log(patientInfo);
-  const altura = MobileView ? '100vh' : '84vh';
+  const altura = MobileView ? '100vh' : '81vh';
 
   return (
     <div>
