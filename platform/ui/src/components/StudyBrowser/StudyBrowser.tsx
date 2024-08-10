@@ -36,7 +36,8 @@ const StudyBrowser = ({
 }: withAppTypes) => {
   const { t } = useTranslation('StudyBrowser');
   const { customizationService } = servicesManager?.services || {};
-
+  const mql = window.matchMedia('(min-width:1024px)');
+  let MobileView = mql.matches;
   const getTabContent = () => {
     const tabData = tabs.find(tab => tab.name === activeTabName);
     return tabData.studies.map(
@@ -44,18 +45,20 @@ const StudyBrowser = ({
         const isExpanded = expandedStudyInstanceUIDs.includes(studyInstanceUid);
         return (
           <React.Fragment key={studyInstanceUid}>
-            <StudyItem
-              date={date}
-              description={description}
-              numInstances={numInstances}
-              modalities={modalities}
-              trackedSeries={getTrackedSeries(displaySets)}
-              isActive={isExpanded}
-              onClick={() => {
-                onClickStudy(studyInstanceUid);
-              }}
-              data-cy="thumbnail-list"
-            />
+            {MobileView ? (
+              <StudyItem
+                date={date}
+                description={description}
+                numInstances={numInstances}
+                modalities={modalities}
+                trackedSeries={getTrackedSeries(displaySets)}
+                isActive={isExpanded}
+                onClick={() => {
+                  onClickStudy(studyInstanceUid);
+                }}
+                data-cy="thumbnail-list"
+              />
+            ) : null}
             {isExpanded && displaySets && (
               <ThumbnailList
                 thumbnails={displaySets}
@@ -73,49 +76,51 @@ const StudyBrowser = ({
 
   return (
     <React.Fragment>
-      <div
-        className="w-100 border-secondary-light bg-primary-dark flex h-20 flex-col items-center justify-center gap-2 border-b p-4"
-        data-cy={'studyBrowser-panel'}
-      >
-        {/* TODO Revisit design of LegacyButtonGroup later - for now use LegacyButton for its children.*/}
-        <LegacyButtonGroup
-          variant="outlined"
-          color="secondary"
-          splitBorder={false}
+      {MobileView ? (
+        <div
+          className="w-100 border-secondary-light bg-primary-dark flex h-20 flex-col items-center justify-center gap-2 border-b p-4"
+          data-cy={'studyBrowser-panel'}
         >
-          {tabs.map(tab => {
-            const { name, label, studies } = tab;
-            const isActive = activeTabName === name;
-            const isDisabled = !studies.length;
-            // Apply the contrasting color for brighter button color visibility
-            const classStudyBrowser = customizationService?.getModeCustomization(
-              'class:StudyBrowser'
-            ) || {
-              true: 'default',
-              false: 'default',
-            };
-            const color = classStudyBrowser[`${isActive}`];
-            return (
-              <LegacyButton
-                key={name}
-                className={'min-w-18 p-2 text-base text-white'}
-                size="initial"
-                color={color}
-                bgColor={isActive ? 'bg-primary-main' : 'bg-black'}
-                onClick={() => {
-                  onClickTab(name);
-                }}
-                disabled={isDisabled}
-              >
-                {t(label)}
-              </LegacyButton>
-            );
-          })}
-        </LegacyButtonGroup>
-        {window.config.experimentalStudyBrowserSort && (
-          <StudyBrowserSort servicesManager={servicesManager} />
-        )}
-      </div>
+          {/* TODO Revisit design of LegacyButtonGroup later - for now use LegacyButton for its children.*/}
+          <LegacyButtonGroup
+            variant="outlined"
+            color="secondary"
+            splitBorder={false}
+          >
+            {tabs.map(tab => {
+              const { name, label, studies } = tab;
+              const isActive = activeTabName === name;
+              const isDisabled = !studies.length;
+              // Apply the contrasting color for brighter button color visibility
+              const classStudyBrowser = customizationService?.getModeCustomization(
+                'class:StudyBrowser'
+              ) || {
+                true: 'default',
+                false: 'default',
+              };
+              const color = classStudyBrowser[`${isActive}`];
+              return (
+                <LegacyButton
+                  key={name}
+                  className={'min-w-18 p-2 text-base text-white'}
+                  size="initial"
+                  color={color}
+                  bgColor={isActive ? 'bg-primary-main' : 'bg-black'}
+                  onClick={() => {
+                    onClickTab(name);
+                  }}
+                  disabled={isDisabled}
+                >
+                  {t(label)}
+                </LegacyButton>
+              );
+            })}
+          </LegacyButtonGroup>
+          {window.config.experimentalStudyBrowserSort && (
+            <StudyBrowserSort servicesManager={servicesManager} />
+          )}
+        </div>
+      ) : null}
       <div className="ohif-scrollbar invisible-scrollbar flex flex-1 flex-col overflow-auto">
         {getTabContent()}
       </div>

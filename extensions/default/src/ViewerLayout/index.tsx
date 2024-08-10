@@ -173,26 +173,25 @@ function ViewerLayout({
   const { patientInfo, isMixedPatients } = usePatientInfo(servicesManager);
   localStorage.setItem('paciente', patientInfo.PatientName);
   console.log(patientInfo);
+  const altura = MobileView ? '100vh' : '84vh';
 
   return (
     <div>
       <Mensaje />
-      {MobileView ? (
-        <ViewerHeader
-          hotkeysManager={hotkeysManager}
-          extensionManager={extensionManager}
-          servicesManager={servicesManager}
-          appConfig={appConfig}
-        />
-      ) : null}
+      <ViewerHeader
+        hotkeysManager={hotkeysManager}
+        extensionManager={extensionManager}
+        servicesManager={servicesManager}
+        appConfig={appConfig}
+      />
       <div
-        className="relative flex w-full flex-row flex-nowrap items-stretch overflow-hidden bg-black"
-        style={{ height: 'calc(100vh - 52px' }}
+        className="relative flex w-screen flex-row flex-nowrap items-stretch overflow-hidden bg-black"
+        style={{ height: `calc(${altura} - 52px` }}
       >
         <React.Fragment>
           {showLoadingIndicator && <LoadingIndicatorProgress className="h-full w-full bg-black" />}
           {/* LEFT SIDEPANELS */}
-          {hasLeftPanels ? (
+          {hasLeftPanels && MobileView ? (
             <ErrorBoundary context="Left Panel">
               <SidePanelWithServices
                 side="left"
@@ -213,17 +212,17 @@ function ViewerLayout({
               </ErrorBoundary>
             </div>
           </div>
-          {/* {hasRightPanels ? (
-            <ErrorBoundary context="Right Panel">
-              <SidePanelWithServices
-                side="right"
-                activeTabIndex={rightPanelClosedState ? null : 0}
-                servicesManager={servicesManager}
-              />
-            </ErrorBoundary>
-          ) : null} */}
         </React.Fragment>
       </div>
+      {hasLeftPanels && !MobileView ? (
+        <ErrorBoundary context="Left Panel">
+          <SidePanelWithServices
+            side="left"
+            activeTabIndex={leftPanelClosedState ? null : 0}
+            servicesManager={servicesManager}
+          />
+        </ErrorBoundary>
+      ) : null}
 
       {/* <InvestigationalUseDialog dialogConfiguration={appConfig?.investigationalUseDialog} /> */}
     </div>

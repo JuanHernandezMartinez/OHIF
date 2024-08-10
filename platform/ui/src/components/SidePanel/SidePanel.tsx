@@ -148,9 +148,11 @@ const getToolTipContent = (label: string, disabled: boolean) => {
 };
 
 const createBaseStyle = (expandedWidth: number) => {
+  const mql = window.matchMedia('(min-width:1024px)');
+  let MobileView = mql.matches;
   return {
-    maxWidth: `${expandedWidth}px`,
-    width: `${expandedWidth}px`,
+    maxWidth: MobileView ? `${expandedWidth}px` : '100vw',
+    width: MobileView ? `${expandedWidth}px` : '100vw',
     // To align the top of the side panel with the top of the viewport grid, use position relative and offset the
     // top by the same top offset as the viewport grid. Also adjust the height so that there is no overflow.
     position: 'relative',
@@ -167,6 +169,8 @@ const SidePanel = ({
   expandedWidth = 248,
   onActiveTabIndexChange,
 }) => {
+  const mql = window.matchMedia('(min-width:1024px)');
+  let MobileView = mql.matches;
   const { t } = useTranslation('SidePanel');
 
   const [panelOpen, setPanelOpen] = useState(activeTabIndexProp !== null);
@@ -214,21 +218,26 @@ const SidePanel = ({
     const _childComponents = Array.isArray(tabs) ? tabs : [tabs];
     return (
       <>
-        <div
-          className={classnames(
-            'bg-secondary-dark flex h-[28px] w-full cursor-pointer items-center rounded-md',
-            side === 'left' ? 'justify-end pr-2' : 'justify-start pl-2'
-          )}
-          onClick={() => {
-            updatePanelOpen(!panelOpen);
-          }}
-          data-cy={`side-panel-header-${side}`}
-        >
-          <Icon
-            name={'navigation-panel-right-reveal'}
-            className={classnames('text-primary-active', side === 'left' && 'rotate-180 transform')}
-          />
-        </div>
+        {MobileView ? (
+          <div
+            className={classnames(
+              'bg-secondary-dark flex h-[28px] w-full cursor-pointer items-center rounded-md',
+              side === 'left' ? 'justify-end pr-2' : 'justify-start pl-2'
+            )}
+            onClick={() => {
+              updatePanelOpen(!panelOpen);
+            }}
+            data-cy={`side-panel-header-${side}`}
+          >
+            <Icon
+              name={'navigation-panel-right-reveal'}
+              className={classnames(
+                'text-primary-active',
+                side === 'left' && 'rotate-180 transform'
+              )}
+            />
+          </div>
+        ) : null}
         <div className={classnames('mt-3 flex flex-col space-y-3')}>
           {_childComponents.map((childComponent, index) => (
             <Tooltip
@@ -237,7 +246,7 @@ const SidePanel = ({
               content={getToolTipContent(childComponent.label, childComponent.disabled)}
               className={classnames(
                 'flex items-center',
-                side === 'left' ? 'justify-end ' : 'justify-start '
+                side === 'left' ? 'justify-end' : 'justify-start'
               )}
             >
               <div
@@ -292,7 +301,7 @@ const SidePanel = ({
     const numCols = getNumGridColumns(tabs.length, gridWidth);
 
     return (
-      <div className={classnames('flex grow ', side === 'right' ? 'justify-start' : 'justify-end')}>
+      <div className={classnames('flex grow', side === 'right' ? 'justify-start' : 'justify-end')}>
         <div
           className={classnames('bg-primary-dark text-primary-active flex flex-wrap')}
           style={getGridStyle(side, tabs.length, gridWidth, expandedWidth)}
@@ -354,7 +363,7 @@ const SidePanel = ({
     return (
       <div
         className={classnames(
-          'text-primary-active flex	 grow cursor-pointer select-none justify-center self-center text-[13px]'
+          'text-primary-active flex grow cursor-pointer select-none justify-center self-center text-[13px]'
         )}
         style={{
           ...(side === 'left'
@@ -362,7 +371,6 @@ const SidePanel = ({
             : { marginRight: `${closeIconWidth}px` }),
         }}
         data-cy={`${tabs[0].name}-btn`}
-        onClick={() => updatePanelOpen(!panelOpen)}
       >
         <span>{tabs[0].label}</span>
       </div>
@@ -371,9 +379,9 @@ const SidePanel = ({
 
   const getOpenStateComponent = () => {
     return (
-      <div className="bg-primary-dark flex select-none rounded-t pt-1.5 pb-[2px]	">
-        {getCloseIcon()}
-        {tabs.length === 1 ? getOneTabComponent() : getTabGridComponent()}
+      <div className="flex select-none">
+        {MobileView ? getCloseIcon() : null}
+        {/* {tabs.length === 1 ? getOneTabComponent() : getTabGridComponent()} */}
       </div>
     );
   };

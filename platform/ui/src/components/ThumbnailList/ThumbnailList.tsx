@@ -13,10 +13,17 @@ const ThumbnailList = ({
   onClickUntrack,
   activeDisplaySetInstanceUIDs = [],
 }) => {
+  const mql = window.matchMedia('(min-width:1024px)');
+  let MobileVewi = mql.matches;
+  let flex = '';
+  if (!MobileVewi) {
+    flex = 'flex';
+  }
+
   return (
     <div
       id="ohif-thumbnail-list"
-      className="ohif-scrollbar study-min-height overflow-y-hidden bg-black py-5"
+      className={`${flex} ohif-scrollbar study-min-height overflow-y-hidden bg-black py-5`}
     >
       {thumbnails.map(
         ({
