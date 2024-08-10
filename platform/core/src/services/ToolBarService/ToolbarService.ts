@@ -389,7 +389,7 @@ export default class ToolbarService extends PubSubService {
   getButtonSection(sectionId: string, props?: Record<string, unknown>) {
     const mql = window.matchMedia('(min-width:1024px)');
     let MobileView = mql.matches;
-    const buttonsMobil = ['Zoom', 'Pan', 'WindowLevel', 'Capture', 'MoreTools'];
+    const buttonsMobil = ['Pan', 'WindowLevel', 'MoreTools'];
     let buttonSectionIds = this.state.buttonSections[sectionId];
 
     if (!MobileView) {
