@@ -13,10 +13,10 @@ const ThumbnailList = ({
   onClickUntrack,
   activeDisplaySetInstanceUIDs = [],
 }) => {
-  const mql = window.matchMedia('(min-width:1024px)');
-  let MobileVewi = mql.matches;
+  const mql = window.matchMedia('(min-width:1000px)');
+  let MobileView = mql.matches;
   let flex = '';
-  if (!MobileVewi) {
+  if (!MobileView) {
     flex = 'flex';
   }
 

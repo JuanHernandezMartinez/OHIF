@@ -108,7 +108,7 @@ function ViewerLayout({
 
   const viewportComponents = viewports.map(getViewportComponentData);
 
-  const mql = window.matchMedia('(min-width:1024px)');
+  const mql = window.matchMedia('(min-width:1000px)');
   let MobileView = mql.matches;
 
   const { formatDate, formatPN } = utils;
@@ -172,7 +172,7 @@ function ViewerLayout({
 
   const { patientInfo, isMixedPatients } = usePatientInfo(servicesManager);
   localStorage.setItem('paciente', patientInfo.PatientName);
-  const altura = MobileView ? '100vh' : '75vh';
+  const altura = MobileView ? '100vh' : '70vh';
 
   return (
     <div>
@@ -211,8 +211,18 @@ function ViewerLayout({
               </ErrorBoundary>
             </div>
           </div>
+          {hasRightPanels && MobileView ? (
+            <ErrorBoundary context="Right Panel">
+              <SidePanelWithServices
+                side="right"
+                activeTabIndex={rightPanelClosedState ? null : 0}
+                servicesManager={servicesManager}
+              />
+            </ErrorBoundary>
+          ) : null}
         </React.Fragment>
       </div>
+
       {hasLeftPanels && !MobileView ? (
         <ErrorBoundary context="Left Panel">
           <SidePanelWithServices

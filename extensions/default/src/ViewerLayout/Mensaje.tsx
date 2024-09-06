@@ -4,7 +4,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import Alert from '@mui/material/Alert';
@@ -28,8 +27,8 @@ const Transition = React.forwardRef(function Transition(
 function Mensaje() {
   const [open, setOpen] = useState(false);
 
-  const mql = window.matchMedia('(min-width:1024px)');
-  let MobileVewi = mql.matches;
+  const mql = window.matchMedia('(min-width:1000px)');
+  let MobileView = mql.matches;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,8 +43,7 @@ function Mensaje() {
   };
 
   useEffect(() => {
-    console.log(MobileVewi);
-    if (!MobileVewi) {
+    if (!MobileView) {
       handleClickOpen();
     }
   }, []);

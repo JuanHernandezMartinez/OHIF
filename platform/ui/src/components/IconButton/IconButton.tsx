@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const mql = window.matchMedia('(min-width:1024px)');
-let MobileVewi = mql.matches;
 const baseClasses =
   'text-center items-center justify-center transition duration-300 ease-in-out outline-none font-bold focus:outline-none';
 

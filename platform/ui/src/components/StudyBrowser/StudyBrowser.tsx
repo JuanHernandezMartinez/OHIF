@@ -36,7 +36,7 @@ const StudyBrowser = ({
 }: withAppTypes) => {
   const { t } = useTranslation('StudyBrowser');
   const { customizationService } = servicesManager?.services || {};
-  const mql = window.matchMedia('(min-width:1024px)');
+  const mql = window.matchMedia('(min-width:1000px)');
   let MobileView = mql.matches;
   const getTabContent = () => {
     const tabData = tabs.find(tab => tab.name === activeTabName);

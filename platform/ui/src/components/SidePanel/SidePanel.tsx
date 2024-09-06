@@ -148,7 +148,7 @@ const getToolTipContent = (label: string, disabled: boolean) => {
 };
 
 const createBaseStyle = (expandedWidth: number) => {
-  const mql = window.matchMedia('(min-width:1024px)');
+  const mql = window.matchMedia('(min-width:1000px)');
   let MobileView = mql.matches;
   return {
     maxWidth: MobileView ? `${expandedWidth}px` : '100vw',
