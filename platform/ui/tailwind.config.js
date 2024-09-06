@@ -25,14 +25,14 @@ module.exports = {
       inherit: 'inherit',
 
       aqua: {
-        pale: '#7bb2ce',
+        pale: '#38a169',
       },
 
       primary: {
-        light: '#5acce6',
-        main: '#0944b3',
-        dark: '#090c29',
-        active: '#348cfd',
+        light: '#8eb716', //verde claro
+        main: '#637713', //verde obscuro
+        dark: '#637713', //verde obscuro
+        active: '#38a169', //verde limon
       },
       inputfield: {
         main: '#3a3f99',
@@ -42,14 +42,14 @@ module.exports = {
       },
 
       secondary: {
-        light: '#3a3f99',
-        main: '#2b166b',
-        dark: '#041c4a',
-        active: '#1f1f27',
+        light: '#8eb716', //verde claro
+        main: '#4f4f4f', //gris
+        dark: '#4f4f4f', //gris
+        active: '#38a169',
       },
 
       indigo: {
-        dark: '#0b1a42',
+        dark: '#c9f42d',
       },
 
       common: {
@@ -68,9 +68,9 @@ module.exports = {
       customblue: {
         10: '#0A163F',
         20: '#0B1F54',
-        30: '#09286e',
+        30: '#637713',
         40: '#0E307F',
-        50: '#0F3A94',
+        50: '#8eb716',
         80: '#1454D4',
         100: '#c4fdff',
         200: '#38daff',
@@ -169,7 +169,7 @@ module.exports = {
         700: '#4c51bf',
         800: '#434190',
         900: '#3c366b',
-        dark: '#0b1a42',
+        dark: '#637713',
       },
       purple: {
         100: '#faf5ff',
