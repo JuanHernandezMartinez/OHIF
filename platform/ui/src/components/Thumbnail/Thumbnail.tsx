@@ -70,7 +70,7 @@ const Thumbnail = ({
             'flex h-32 flex-1 items-center justify-center overflow-hidden rounded-md bg-black text-base text-white',
             isActive
               ? 'border-primary-light border-2'
-              : 'border-secondary-light border hover:border-green-600'
+              : 'border-secondary-light border hover:border-blue-300'
           )}
         >
           {imageSrc ? (
@@ -84,7 +84,7 @@ const Thumbnail = ({
             <div>{imageAltText}</div>
           )}
         </div>
-        <div className="flex flex-1 flex-row items-center pt-2 text-base text-green-600">
+        <div className="flex flex-1 flex-row items-center pt-2 text-base text-blue-300">
           <div className="mr-4">
             <span className="text-primary-main font-bold">{'S: '}</span>
             {seriesNumber}
